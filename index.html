@@ -18,7 +18,7 @@
             <span ng-bind-html="output"></span>
         </div>
 
-        <query-builder group="filter.group"></query-builder>
+        <query-builder group="filter.group" conditions="conditions" fields="fields"></query-builder>
     </div>
 
     <script type="text/ng-template" id="/queryBuilderDirective.html">
@@ -49,8 +49,8 @@
     </div>
     </script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>
     <script src="angular-query-builder.js"></script>
   </body>
 </html>

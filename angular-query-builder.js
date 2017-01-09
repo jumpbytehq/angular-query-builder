@@ -2,6 +2,23 @@ var app = angular.module('app', ['ngSanitize', 'queryBuilder']);
 app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
     var data = '{"group": {"operator": "AND","rules": []}}';
 
+    $scope.fields = [
+        { name: 'Firstname' },
+        { name: 'Lastname' },
+        { name: 'Birthdate' },
+        { name: 'City' },
+        { name: 'Country' }
+    ];
+
+    $scope.conditions = [
+        { name: '=' },
+        { name: '<>' },
+        { name: '<' },
+        { name: '<=' },
+        { name: '>' },
+        { name: '>=' }
+    ];
+
     function htmlEntities(str) {
         return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
@@ -33,7 +50,9 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
     return {
         restrict: 'E',
         scope: {
-            group: '='
+            group: '=',
+            fields: '=',
+            conditions: '='
         },
         templateUrl: '/queryBuilderDirective.html',
         compile: function (element, attrs) {
@@ -45,15 +64,15 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     { name: 'OR' }
                 ];
 
-                scope.fields = [
+                var DEFAULT_FIELDS = [
                     { name: 'Firstname' },
                     { name: 'Lastname' },
                     { name: 'Birthdate' },
                     { name: 'City' },
                     { name: 'Country' }
                 ];
-
-                scope.conditions = [
+                            
+                var DEFAULT_CONDITIONS = [
                     { name: '=' },
                     { name: '<>' },
                     { name: '<' },
@@ -61,6 +80,9 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     { name: '>' },
                     { name: '>=' }
                 ];
+
+                scope.fields = scope.fields || DEFAULT_FIELDS;
+                scope.conditions = scope.condition || DEFAULT_CONDITIONS; 
 
                 scope.addCondition = function () {
                     scope.group.rules.push({
