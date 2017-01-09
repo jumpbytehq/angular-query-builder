@@ -1,0 +1,32 @@
+{
+  "name": "angular-query-builder",
+  "version": "1.0.0",
+  "main": [
+    "angular-query-builder.js",
+    "css/styles.css",
+    "template/queryBuilderDirective.html"
+  ],
+  "authors": [
+    "mfauveau"
+  ],
+  "description": "angular query builder",
+  "moduleType": [],
+  "keywords": [
+    "angular",
+    "query",
+    "builder"
+  ],
+  "license": "MIT",
+  "homepage": "http://mfauveau.github.io/angular-query-builder",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": ">=1.4.x",
+    "bootstrap": "^3.1.0"
+  }
+}
