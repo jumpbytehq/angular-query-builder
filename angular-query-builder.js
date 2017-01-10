@@ -1,7 +1,5 @@
 var app = angular.module('app', ['ngSanitize', 'queryBuilder']);
 app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
-    var data = '{"group": {"operator": "AND","rules": []}}';
-
     $scope.fields = [
         { name: 'Firstname' },
         { name: 'Lastname' },
@@ -18,31 +16,7 @@ app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
         { name: '>' },
         { name: '>=' }
     ];
-
-    function htmlEntities(str) {
-        return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function computed(group) {
-        if (!group) return "";
-        for (var str = "(", i = 0; i < group.rules.length; i++) {
-            i > 0 && (str += " <strong>" + group.operator + "</strong> ");
-            str += group.rules[i].group ?
-                computed(group.rules[i].group) :
-                group.rules[i].field + " " + htmlEntities(group.rules[i].condition) + " " + group.rules[i].data;
-        }
-
-        return str + ")";
-    }
-
-    $scope.json = null;
-
-    $scope.filter = JSON.parse(data);
-
-    $scope.$watch('filter', function (newValue) {
-        $scope.json = JSON.stringify(newValue, null, 2);
-        $scope.output = computed(newValue.group);
-    }, true);
+    $scope.query;
 }]);
 
 var queryBuilder = angular.module('queryBuilder', []);
@@ -79,9 +53,9 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
     return {
         restrict: 'E',
         scope: {
-            group: '=',
             fields: '=',
-            conditions: '='
+            conditions: '=',
+            query: '='
         },
         templateUrl: '/queryBuilderDirective.html',
         compile: function (element, attrs) {
@@ -92,31 +66,36 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     { name: 'AND' },
                     { name: 'OR' }
                 ];
+                scope.group = {
+                    "operator": "AND",
+                    "rules": []
+                };
+                scope.query = '';
 
-                var DEFAULT_FIELDS = [
-                    { name: 'Firstname' },
-                    { name: 'Lastname' },
-                    { name: 'Birthdate' },
-                    { name: 'City' },
-                    { name: 'Country' }
-                ];
-                            
-                var DEFAULT_CONDITIONS = [
-                    { name: '=' },
-                    { name: '<>' },
-                    { name: '<' },
-                    { name: '<=' },
-                    { name: '>' },
-                    { name: '>=' }
-                ];
+                function escape(str) {
+                    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+                }
 
-                scope.fields = scope.fields || DEFAULT_FIELDS;
-                scope.conditions = scope.condition || DEFAULT_CONDITIONS; 
+                function computed(group) {
+                    if (!group) return "";
+                    for (var str = "(", i = 0; i < group.rules.length; i++) {
+                        i > 0 && (str += ' '+group.operator+' ');
+                        str += group.rules[i].group ?
+                            computed(group.rules[i].group) :
+                            group.rules[i].field + " " + group.rules[i].condition + " \"" + escape(group.rules[i].data) + "\"";
+                    }
+
+                    return str + ")";
+                }
 
                 scope.addCondition = function () {
+                    if(!scope.fields || !scope.fields.length) {
+                        return;
+                    }
+                    
                     scope.group.rules.push({
                         condition: '=',
-                        field: 'Firstname',
+                        field: scope.fields[0].name,
                         data: ''
                     });
                 };
@@ -137,6 +116,10 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                 scope.removeGroup = function () {
                     "group" in scope.$parent && scope.$parent.group.rules.splice(scope.$parent.$index, 1);
                 };
+
+                scope.$watch(function() {return JSON.stringify(scope.group)}, function (newValue) {
+                    scope.query = computed(scope.group);
+                }, true);
 
                 directive || (directive = $compile(content));
 

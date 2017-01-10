@@ -15,10 +15,10 @@
 
         <div class="alert alert-info">
             <strong>Example Output</strong><br>
-            <span ng-bind-html="output"></span>
+            <pre ng-bind="query"></pre>
         </div>
 
-        <query-builder group="filter.group" conditions="conditions" fields="fields"></query-builder>
+        <query-builder query="query" conditions="conditions" fields="fields"></query-builder>
     </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>
