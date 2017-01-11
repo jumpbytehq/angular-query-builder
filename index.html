@@ -13,14 +13,25 @@
     <div class="container" ng-controller="QueryBuilderCtrl">
     <h1>Angular.js Query Builder</h1>
 
-        <div class="alert alert-info">
-            <strong>Example Output</strong><br>
-            <pre ng-bind="query"></pre>
-            <br>
-            <pre>{{queryObj}}</pre>
-        </div>
+    <h3>Normal Usage</h3>
+    <div class="alert alert-info">
+        <strong>Example Output</strong><br>
+        <pre ng-bind="query1"></pre>
+        <br>
+        <pre>{{queryObj1}}</pre>
+    </div>
+    <query-builder query-json="queryObj1" query="query1" fields="fields"></query-builder>
 
-        <query-builder query="query" fields="fields"></query-builder>
+    <!--predefined query-->
+    <h3>Predefind Query Object</h3>
+    <div class="alert alert-info">
+        <strong>Example Output</strong><br>
+        <pre ng-bind="query2"></pre>
+        <br>
+        <pre>{{queryObj2}}</pre>
+    </div>
+    <query-builder query-json="queryObj2" query="query2" fields="fields"></query-builder>
+
     </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>

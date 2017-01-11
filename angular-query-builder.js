@@ -8,8 +8,20 @@ app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
         { name: 'Country' }
     ];
 
-    $scope.query;
-    $scope.queryObj;
+    $scope.query1;
+    $scope.queryObj1;
+
+    $scope.query2;
+    $scope.queryObj2 = {
+        "operator":"AND",
+        "rules":[
+            {
+                "condition":"=",
+                "field":"Firstname",
+                "data":"testing"
+            }
+        ]
+    };
 }]);
 
 var queryBuilder = angular.module('queryBuilder', []);
@@ -69,7 +81,7 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     { name: 'AND' },
                     { name: 'OR' }
                 ];
-                scope.group = {
+                scope.group = scope.queryJson ? scope.queryJson : {
                     "operator": "AND",
                     "rules": []
                 };
@@ -131,7 +143,7 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                 element.append(directive(scope, function ($compile) {
                     return $compile;
                 }));
-            }
+            };
         }
     }
 }]);
