@@ -8,15 +8,8 @@ app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
         { name: 'Country' }
     ];
 
-    $scope.conditions = [
-        { name: '=' },
-        { name: '<>' },
-        { name: '<' },
-        { name: '<=' },
-        { name: '>' },
-        { name: '>=' }
-    ];
     $scope.query;
+    $scope.queryObj;
 }]);
 
 var queryBuilder = angular.module('queryBuilder', []);
@@ -54,14 +47,24 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
         restrict: 'E',
         scope: {
             fields: '=',
-            conditions: '=',
-            query: '='
+            conditions: '=?',
+            query: '=',
+            queryJson: '=?'
         },
         templateUrl: '/queryBuilderDirective.html',
         compile: function (element, attrs) {
             var content, directive;
             content = element.contents().remove();
             return function (scope, element, attrs) {
+                var DEFAULT_CONDITIONS = [
+                    { name: '=' },
+                    { name: '<>' },
+                    { name: '<' },
+                    { name: '<=' },
+                    { name: '>' },
+                    { name: '>=' }
+                ];
+
                 scope.operators = [
                     { name: 'AND' },
                     { name: 'OR' }
@@ -71,6 +74,7 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     "rules": []
                 };
                 scope.query = '';
+                scope.conditions = scope.conditions || DEFAULT_CONDITIONS;
 
                 function escape(str) {
                     return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
@@ -119,6 +123,7 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
 
                 scope.$watch(function() {return JSON.stringify(scope.group)}, function (newValue) {
                     scope.query = computed(scope.group);
+                    scope.queryJson = angular.copy(scope.group);
                 }, true);
 
                 directive || (directive = $compile(content));

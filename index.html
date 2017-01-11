@@ -16,9 +16,11 @@
         <div class="alert alert-info">
             <strong>Example Output</strong><br>
             <pre ng-bind="query"></pre>
+            <br>
+            <pre>{{queryObj}}</pre>
         </div>
 
-        <query-builder query="query" conditions="conditions" fields="fields"></query-builder>
+        <query-builder query="query" fields="fields"></query-builder>
     </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>
