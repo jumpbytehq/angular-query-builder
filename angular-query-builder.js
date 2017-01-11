@@ -12,15 +12,27 @@ app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
     $scope.queryObj1;
 
     $scope.query2;
-    $scope.queryObj2 = {
-        "operator":"AND",
-        "rules":[
-            {
-                "condition":"=",
-                "field":"Firstname",
-                "data":"testing"
+    $scope.queryObj2 = { 
+        "operator": "AND", 
+        "rules": [
+            { 
+                "condition": "=", 
+                "field": "Firstname", 
+                "data": "gsdfg" 
+            }, 
+            { 
+                "group": { 
+                    "operator": "AND", 
+                    "rules": [
+                        { 
+                            "condition": "=", 
+                            "field": "Firstname", 
+                            "data": "fsdfdsfdsf" 
+                        }
+                    ] 
+                } 
             }
-        ]
+        ] 
     };
 }]);
 
@@ -38,7 +50,7 @@ queryBuilder.run(function($templateCache) {
                 <div ng-repeat="rule in group.rules | orderBy:'index'" class="condition">
                     <div ng-switch="rule.hasOwnProperty('group')">
                         <div ng-switch-when="true">
-                            <query-builder group="rule.group"></query-builder>
+                            <query-builder query-json="rule.group" query="query" fields="fields"></query-builder>
                         </div>
                         <div ng-switch-default="ng-switch-default">
                             <div class="form-inline">
