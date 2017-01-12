@@ -38,34 +38,34 @@ app.controller('QueryBuilderCtrl', ['$scope', function ($scope) {
 
 var queryBuilder = angular.module('queryBuilder', []);
 queryBuilder.run(function($templateCache) {
-    $templateCache.put('/queryBuilderDirective.html', `
-        <div class="alert alert-warning alert-group">
-            <div class="form-inline">
-                <select ng-options="o.name as o.name for o in operators" ng-model="group.operator" class="form-control input-sm"></select>
-                <button style="margin-left: 5px" ng-click="addCondition()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Condition</button>
-                <button style="margin-left: 5px" ng-click="addGroup()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Group</button>
-                <button style="margin-left: 5px" ng-click="removeGroup()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span> Remove Group</button>
-            </div>
-            <div class="group-conditions">
-                <div ng-repeat="rule in group.rules | orderBy:'index'" class="condition">
-                    <div ng-switch="rule.hasOwnProperty('group')">
-                        <div ng-switch-when="true">
-                            <query-builder query-json="rule.group" query="query" fields="fields"></query-builder>
-                        </div>
-                        <div ng-switch-default="ng-switch-default">
-                            <div class="form-inline">
-                                <select ng-options="t.name as t.name for t in fields" ng-model="rule.field" class="form-control input-sm"></select>
-                                <select style="margin-left: 5px" ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control input-sm"></select>
-                                <input style="margin-left: 5px" type="text" ng-model="rule.data" class="form-control input-sm"/>
-                                <button style="margin-left: 5px" ng-click="removeCondition($index)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `);
+    $templateCache.put('/queryBuilderDirective.html', 
+        '<div class="alert alert-warning alert-group">' +
+            '<div class="form-inline">' +
+                '<select ng-options="o.name as o.name for o in operators" ng-model="group.operator" class="form-control input-sm"></select>' +
+                '<button style="margin-left: 5px" ng-click="addCondition()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Condition</button>' +
+                '<button style="margin-left: 5px" ng-click="addGroup()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Group</button>' +
+                '<button style="margin-left: 5px" ng-click="removeGroup()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span> Remove Group</button>' +
+            '</div>' +
+            '<div class="group-conditions">' +
+                '<div ng-repeat="rule in group.rules | orderBy:\'index\'" class="condition">' +
+                    '<div ng-switch="rule.hasOwnProperty(\'group\')">' +
+                        '<div ng-switch-when="true">' +
+                            '<query-builder query-json="rule.group" query="query" fields="fields"></query-builder>' +
+                        '</div>' +
+                        '<div ng-switch-default="ng-switch-default">' +
+                            '<div class="form-inline">' +
+                                '<select ng-options="t.name as t.name for t in fields" ng-model="rule.field" class="form-control input-sm"></select>' +
+                                '<select style="margin-left: 5px" ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control input-sm"></select>' +
+                                '<input style="margin-left: 5px" type="text" ng-model="rule.data" class="form-control input-sm"/>' +
+                                '<button style="margin-left: 5px" ng-click="removeCondition($index)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>');
 });
+
 queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
     return {
         restrict: 'E',
