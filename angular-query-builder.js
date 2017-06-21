@@ -115,7 +115,7 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                         }
                         else {
                             if(group.rules[i].condition === 'Contains') {
-                                str += group.rules[i].field + " LIKE \"%" + escape(group.rules[i].data) + "\"%";
+                                str += group.rules[i].field + " LIKE \"%" + escape(group.rules[i].data) + "%\"";
                             }
                             else {
                                 str += group.rules[i].field + " " + group.rules[i].condition + " \"" + escape(group.rules[i].data) + "\"";
