@@ -86,7 +86,8 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     { name: '<' },
                     { name: '<=' },
                     { name: '>' },
-                    { name: '>=' }
+                    { name: '>=' },
+                    { name: 'Contains'}
                 ];
 
                 scope.operators = [
@@ -108,9 +109,18 @@ queryBuilder.directive('queryBuilder', ['$compile', function ($compile) {
                     if (!group) return "";
                     for (var str = "(", i = 0; i < group.rules.length; i++) {
                         i > 0 && (str += ' '+group.operator+' ');
-                        str += group.rules[i].group ?
-                            computed(group.rules[i].group) :
-                            group.rules[i].field + " " + group.rules[i].condition + " \"" + escape(group.rules[i].data) + "\"";
+
+                        if(group.rules[i].group) {
+                            str += computed(group.rules[i].group)
+                        }
+                        else {
+                            if(group.rules[i].condition === 'Contains') {
+                                str += group.rules[i].field + " LIKE \"" + escape(group.rules[i].data) + "\"";
+                            }
+                            else {
+                                str += group.rules[i].field + " " + group.rules[i].condition + " \"" + escape(group.rules[i].data) + "\"";
+                            }
+                        }
                     }
 
                     return str + ")";
